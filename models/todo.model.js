@@ -16,7 +16,7 @@ class Todo {
       .toArray();
 
     return todoDocuments.map(function (todoDocument) {
-      return new Todo(todoDocument._id, todoDocument.text);
+      return new Todo(todoDocument.text, todoDocument._id);
     });
   }
 

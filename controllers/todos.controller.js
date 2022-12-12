@@ -43,9 +43,38 @@ async function addTodo(req, res, next) {
   // We never send back HTML and we never redirect when creating APIs.
 }
 
-function updateTodo(req, res, next) {}
+async function updateTodo(req, res, next) {
+  const todoId = req.params.id;
+  // the patch and delete routes has the id in the url
+  // PATCH/todos/:id
+  // Therefor, we can use req.params.id to access the id of the todo
+  const newTodoText = req.body.newText;
 
-function deleteTodo(req, res, next) {}
+  const todo = new Todo(newTodoText, todoId);
+
+  try {
+    await todo.save();
+  } catch (error) {
+    return next(error);
+  }
+  res.json({ message: "Todo updated", updatedTodo: todo });
+}
+
+async function deleteTodo(req, res, next) {
+  const todoId = req.params.id;
+  // the patch and delete routes has the id in the url
+  // PATCH/todos/:id
+  // Therefor, we can use req.params.id to access the id of the todo
+
+  const todo = new Todo(null, todoId);
+
+  try {
+    await todo.delete();
+  } catch (error) {
+    return next(error);
+  }
+  res.json({ message: "Todo deleted" });
+}
 
 module.exports = {
   getAllTodos: getAllTodos,
